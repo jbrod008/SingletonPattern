@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text livesText;
     public TMP_Text enemiesKilledText;
-    public GameObject gameOverPanel;
+    public GameObject gameOverPanel, GameWonPanel;
     //public TMP_Text scoreText;
 
     private void Awake()
@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
             enemiesKilledText = GameObject.Find("EnemiesText")?.GetComponent<TMP_Text>();
         if (gameOverPanel == null)
             gameOverPanel = GameObject.Find("GameOverPanel");
+        if (GameWonPanel == null)
+            GameWonPanel = GameObject.Find("GameWonPanel");
     }
     public void AddScore(int points)
     {
@@ -101,6 +103,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f; // Pause the game
     }
 
+    public void GameWon()
+    {
+        Debug.Log("GAME Won!");
+        if (GameWonPanel) GameWonPanel.SetActive(true);
+        Time.timeScale = 0f;
+
+    }
+
     public void reloadGame()
     {
         //SceneManager.LoadScene("Delete");
@@ -109,6 +119,9 @@ public class GameManager : MonoBehaviour
 
     public void quitGame()
     {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying= false;
+#endif
         Application.Quit();
     }
 
@@ -133,6 +146,7 @@ public class GameManager : MonoBehaviour
 
         // Hide game over panel
         if (gameOverPanel) gameOverPanel.SetActive(false);
+        if(GameWonPanel) GameWonPanel.SetActive(false);
 
         // Destroy all enemies, bullets, and collectibles before reloading
         DestroyAllGameObjects();

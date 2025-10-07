@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         }
+        if (GameManager.Instance.score > 2000)
+            GameManager.Instance.GameWon();
 
         // Play shoot sound effect
         audioSource.PlayOneShot(shootSound);  
